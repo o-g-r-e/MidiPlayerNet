@@ -23,18 +23,22 @@ public class MidiPlayer {
 		sequencer.open();
 		Sequence sequence = new Sequence(Sequence.PPQ, 4);
 		
-		initTrack(sequence.createTrack());
+		initSimpleTrack(sequence.createTrack());
 		
 		sequencer.setSequence(sequence);
 		sequencer.setTempoInBPM(220);
 	}
 	
-	private void initTrack(Track track) {
+	private void initSimpleTrack(Track track) {
 		for (int i = 5; i < 61; i+=4) {
 			track.add(createEvent(MidiPlayer.START_NOTE, 1, i, 100, i));
 			track.add(createEvent(176, 1, 127, 0, i));
 			track.add(createEvent(MidiPlayer.END_NOTE, 1, i, 100, i+2));
 		}
+	}
+	
+	private void buildTrack() {
+		
 	}
 	
 	public void setTickEventListener(ControllerEventListener c) {
