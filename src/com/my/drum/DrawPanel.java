@@ -1,37 +1,46 @@
 package com.my.drum;
 
 import java.awt.Color;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import javax.sound.midi.ControllerEventListener;
-import javax.sound.midi.ShortMessage;
 import javax.swing.JPanel;
 
-public class DrawPanel extends JPanel implements ControllerEventListener {
+public class DrawPanel extends JPanel  {
 	
-	private boolean msg = true;
+	private boolean repaint = false;
 	
 	public void paintComponent(Graphics g) {
-		if(msg) {
+		if(repaint) {
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setColor(new Color((int)(Math.random()*255), (int)(Math.random()*255), (int)(Math.random()*255)));
-			drawRandomRect(g2d);
+			Rect rect = randomRect();
+			g.fillRect(rect.x, rect.y, rect.w, rect.h);
+			repaint = false;
 		}
 	}
 	
-	private void drawRandomRect(Graphics g) {
+	private Rect randomRect() {
 		int x = (int)(Math.random()*40)+10;
 		int y = (int)(Math.random()*40)+10;
 		int w = (int)(Math.random()*120)+10;
 		int h = (int)(Math.random()*120)+10;
-		g.fillRect(x, y, w, h);
+		return new Rect(x, y, w, h);
 	}
-
-	@Override
-	public void controlChange(ShortMessage event) {
-		msg = true;
+	
+	public void startRepaint() {
+		repaint = true;
 		repaint();
+	}
+	
+	class Rect {
+		int x, y, w, h;
+
+		public Rect(int x, int y, int w, int h) {
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+		}
 	}
 }
